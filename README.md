@@ -1,59 +1,69 @@
-# 🛡️ Securing and Enhancing the Repy Reference Monitor with Undo Support
+# 🛡️ Secure Network Design for a Mid-Size Company
 
-This repository contains an enhanced and secured version of the [Repy Reference Monitor](https://github.com/SeattleTestbed/docs/blob/master/EducationalAssignments/UndoPartOne.md) from the SeattleTestbed project. The work is based on the three-part Undo assignment series:
+This project presents a secure network architecture tailored for a mid-size enterprise. It addresses multiple user scenarios—VLAN users, remote employees using VPN, and cloud service users—while integrating comprehensive security controls at each layer.
 
-- [Undo Part One](https://github.com/SeattleTestbed/docs/blob/master/EducationalAssignments/UndoPartOne.md)
-- [Undo Part Two](https://github.com/SeattleTestbed/docs/blob/master/EducationalAssignments/UndoPartTwo.md)
-- [Undo Part Three](https://github.com/SeattleTestbed/docs/blob/master/EducationalAssignments/UndoPartThree.md)
+## 📌 Objective
 
-## 📌 Project Overview
+Design a layered, defense-in-depth network that ensures secure connectivity, authorized access, and strong threat prevention for internal, remote, and cloud-based operations.
 
-The original Repy-based reference monitor offered basic file operation security and an undo mechanism. However, it had several critical vulnerabilities related to:
+## 🧩 Key Security Design Components
 
-- Inadequate error and exception handling
-- Lack of input validation
-- Missing safety checks for undo operations
-- Race conditions in concurrent access
+### 🔐 Remote VPN Users
+- VPN with **Multi-Factor Authentication (MFA)** for access control
+- VPN traffic flows through **IDS/IPS**, **external and internal firewalls**
+- Suspicious traffic diverted to a **honeypot server**
+- **IP-based and Certificate-based VPN rules** enhance connection security
 
-This project implements security and functionality enhancements that improve the reliability and robustness of the system.
+### 🌐 General Internet Users
+- Users access through **two firewall layers** (external + internal)
+- **ACLs** and **whitelisting** applied for access restriction
+- User accounts are **least-privilege** based on job function
 
-## 🔧 Enhancements Implemented
+### 📶 Wi-Fi Network
+- Use of **multiple SSIDs** with ACL-based restrictions
+- **MAC binding and authentication** to control device access
 
-1. **Thread Safety with Locks**  
-   Prevents race conditions by ensuring exclusive access to shared resources during read, write, and undo operations.
+### ☁️ Cloud Services
+- **IAM protocols**, **API tokens**, and **access keys** used to secure service access
+- Only essential cloud services are granted access to the network
 
-2. **Offset Error Handling**  
-   Validates file offsets before read/write to prevent out-of-bound errors. Raises `RepyArgumentError` or `SeekPastEndOfFileError` if invalid.
+### 🖥️ Internal Network
+- **MFA for LAN access**, scanned by **IDS/IPS** and firewalls
+- **VLAN segregation** for each team with UTM/Firewall rules
+- **MAC binding** for endpoint-device control
+- **Enterprise Antivirus** for real-time protection and centralized threat management
 
-3. **Exception Handling Alignment**  
-   Revised exceptions thrown by the security layer to match the expected behavior of the Repy API.
+### 🧪 Server Protection
+- Includes file, mail, FTP, database, and directory servers
+- Controlled access through **permissions, tokens, and IDS/IPS monitoring**
 
-4. **File Size Validation**  
-   Adds checks for maximum file size to prevent memory overflows or resource exhaustion.
+### ⚙️ Additional Security Measures
+- **Unified Threat Management (UTM)**: Anti-virus, anti-spam, filtering
+- **Endpoint antivirus** with centralized updates and policy enforcement
+- **Remote wipe capabilities** for compromised machines
+- **Mandatory security training** and **physical security protocols**
 
-5. **FileClosedError Handling**  
-   Custom error to gracefully handle operations attempted on closed file handles.
+## 📰 Security Case Study
 
-6. **Validation for Negative Byte Reads**  
-   Ensures `readat()` raises `RepyArgumentError` if negative values are passed.
+### Vanderbilt University Medical Center (VUMC) Breach (2023)
+A database breach—allegedly caused by the Meow ransomware gang—highlights risks in healthcare IT infrastructure. The report evaluates root causes such as legacy systems and the growing threat of ransomware.
 
-## ✅ Outcome
+### Recommendations:
+- Infrastructure modernization
+- Stronger access controls and MFA
+- Regular staff cybersecurity training
 
-The enhanced reference monitor is:
-- Aligned with Repy's API behavior
-- More secure against potential misuse or attack
-- Capable of reliably handling file operations and undo functionality under concurrent workloads
+### Broader Implications:
+- Patient privacy, system disruptions, and data monetization raise concerns about healthcare cybersecurity resilience.
 
-## 📂 Repo Structure
+## 📄 File Structure
 
-```bash
-├── secure_reference_monitor/
-│   ├── secure_reference_monitor.py   # Updated secure monitor implementation
-│   ├── original_reference_monitor.py # Original version for comparison
-│   ├── testcases.py                  # Sample test cases for validation
-│   └── README.md                     # This README file
+```
+secure-network-design/
+├── network_diagram.pdf        # The network design report with diagrams and explanation
+├── README.md                  # This file
 ```
 
-## 🧠 Lessons Learned
+## 🧠 Summary
 
-This project demonstrates how basic security assumptions in reference monitors can be tested and strengthened with defensive programming techniques, robust error handling, and secure concurrency controls.
+This secure network design represents best practices in cybersecurity architecture, including threat detection, access control, and proactive prevention. It demonstrates layered security and policy enforcement across physical and virtual environments.
